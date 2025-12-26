@@ -1,5 +1,5 @@
+<!--add image in res>drawable>past the image with img name-->
 <?xml version="1.0" encoding="utf-8"?>
- <!--add image in res>drawable>past the image with img name-->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
