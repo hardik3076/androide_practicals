@@ -47,15 +47,15 @@
 
         <RadioButton
             android:id="@+id/radioButton"
-            android:text="Male"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Male"/>
 
         <RadioButton
             android:id="@+id/radioButton2"
-            android:text="Female"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:text="Female"/>
     </RadioGroup>
 
     <ToggleButton
