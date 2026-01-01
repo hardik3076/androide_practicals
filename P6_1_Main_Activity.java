@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
         t1 = findViewById(R.id.t_1);
         e1 = findViewById(R.id.editTextText);
         e2 = findViewById(R.id.editTextTextPassword);
+        rg = findViewById(R.id.radioGroup);
         r1 = findViewById(R.id.radioButton);
         r2 = findViewById(R.id.radioButton2);
-        rg = findViewById(R.id.radioGroup);
         tb1 = findViewById(R.id.toggleButton);
         b1 = findViewById(R.id.button);
 
@@ -42,10 +42,19 @@ public class MainActivity extends AppCompatActivity {
                 String name = e1.getText().toString();
                 String pass = e2.getText().toString();
 
-                if (name.equals("pvpit") && pass.equals("pvpit")) {
+                 String gender = "";
+                if (r1.isChecked())
+                    gender = "Male";
+                else if (r2.isChecked())
+                    gender = "Female";
+
+                 String toggleStatus = tb1.isChecked() ? "ON" : "OFF";
+
+                 if (name.equals("pvpit") && pass.equals("pvpit")) {
                     Toast.makeText(MainActivity.this,
-                            "Login Successful",
-                            Toast.LENGTH_SHORT).show();
+                            "Login Successful\nGender: " + gender +
+                                    "\nToggle: " + toggleStatus,
+                            Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(MainActivity.this,
                             "Login Failed",
