@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <!-- 1. ImageView - Banner -->
+        <ImageView
+            android:id="@+id/bannerImage"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:src="@drawable/img"
+            android:scaleType="centerCrop" />
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Library Book Catalog"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp" />
+
+        <!-- 2. GridView - Book Covers -->
+        <GridView
+            android:id="@+id/gridViewBooks"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="2"
+            android:verticalSpacing="10dp"
+            android:horizontalSpacing="10dp"
+            android:stretchMode="columnWidth" />
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Recent Borrowers"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="10dp" />
+
+        <!-- 3. ListView - Borrowers -->
+        <ListView
+            android:id="@+id/listViewBorrowers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:dividerHeight="1dp"/>
+
+    </LinearLayout>
+</ScrollView>
+
+
+<!--    Below is a single complete Android example (Library) that answers all 7 questions together, using:-->
+
+<!--    GridView → Book covers-->
+
+<!--    ImageView → Banner-->
+
+<!--    ScrollView → Entire layout scrollable-->
+
+<!--    ListView → Recent borrowers / guests-->
+
+<!--    Custom Adapter → Book title + image-->
+
+<!--    Click Listener → Toast on ListView click-->
+
+<!--    Dashboard → GridView + ListView on same screen-->
