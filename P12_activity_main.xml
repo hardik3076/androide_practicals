@@ -1,99 +1,59 @@
-package com.example.p12;
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp">
 
-import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+    <!-- Display -->
+    <TextView
+        android:id="@+id/txtDisplay"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:text="0"
+        android:textSize="30sp"
+        android:gravity="end|center_vertical"
+        android:background="#EEEEEE"
+        android:padding="10dp" />
 
-public class MainActivity extends AppCompatActivity {
+    <!-- GridLayout for Calculator Buttons -->
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        android:rowCount="5"
+        android:layout_marginTop="10dp">
 
-    TextView txtDisplay;
-    double firstValue = 0, secondValue = 0;
-    String operator = "";
-    boolean isNewInput = true;
+        <!-- Row 1 -->
+        <Button android:id="@+id/btn7" android:text="7"/>
+        <Button android:id="@+id/btn8" android:text="8"/>
+        <Button android:id="@+id/btn9" android:text="9"/>
+        <Button android:id="@+id/btnDiv" android:text="/"/>
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        <!-- Row 2 -->
+        <Button android:id="@+id/btn4" android:text="4"/>
+        <Button android:id="@+id/btn5" android:text="5"/>
+        <Button android:id="@+id/btn6" android:text="6"/>
+        <Button android:id="@+id/btnMul" android:text="*"/>
 
-        txtDisplay = findViewById(R.id.txtDisplay);
+        <!-- Row 3 -->
+        <Button android:id="@+id/btn1" android:text="1"/>
+        <Button android:id="@+id/btn2" android:text="2"/>
+        <Button android:id="@+id/btn3" android:text="3"/>
+        <Button android:id="@+id/btnSub" android:text="-"/>
 
-        int[] numberButtons = {
-                R.id.btn0, R.id.btn1, R.id.btn2, R.id.btn3,
-                R.id.btn4, R.id.btn5, R.id.btn6,
-                R.id.btn7, R.id.btn8, R.id.btn9, R.id.btnDot
-        };
+        <!-- Row 4 -->
+        <Button android:id="@+id/btn0" android:text="0"/>
+        <Button android:id="@+id/btnDot" android:text="."/>
+        <Button android:id="@+id/btnEqual" android:text="="/>
+        <Button android:id="@+id/btnAdd" android:text="+"/>
 
-        View.OnClickListener numberListener = view -> {
-            Button btn = (Button) view;
-            if (isNewInput) {
-                txtDisplay.setText("");
-                isNewInput = false;
-            }
-            txtDisplay.append(btn.getText().toString());
-        };
+        <!-- Row 5 -->
+        <Button
+            android:id="@+id/btnClear"
+            android:text="C"
+            android:layout_columnSpan="4"
+            android:layout_width="match_parent"/>
+    </GridLayout>
 
-        for (int id : numberButtons) {
-            findViewById(id).setOnClickListener(numberListener);
-        }
-
-        findViewById(R.id.btnAdd).setOnClickListener(v -> setOperator("+"));
-        findViewById(R.id.btnSub).setOnClickListener(v -> setOperator("-"));
-        findViewById(R.id.btnMul).setOnClickListener(v -> setOperator("*"));
-        findViewById(R.id.btnDiv).setOnClickListener(v -> setOperator("/"));
-
-        findViewById(R.id.btnEqual).setOnClickListener(v -> calculateResult());
-
-        findViewById(R.id.btnClear).setOnClickListener(v -> {
-            txtDisplay.setText("0");
-            firstValue = secondValue = 0;
-            operator = "";
-            isNewInput = true;
-        });
-    }
-
-    private void setOperator(String op) {
-        try {
-            firstValue = Double.parseDouble(txtDisplay.getText().toString());
-            operator = op;
-            isNewInput = true;
-        } catch (Exception e) {
-            Toast.makeText(this, "Invalid Input", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void calculateResult() {
-        try {
-            secondValue = Double.parseDouble(txtDisplay.getText().toString());
-            double result = 0;
-
-            switch (operator) {
-                case "+":
-                    result = firstValue + secondValue;
-                    break;
-                case "-":
-                    result = firstValue - secondValue;
-                    break;
-                case "*":
-                    result = firstValue * secondValue;
-                    break;
-                case "/":
-                    if (secondValue == 0) {
-                        Toast.makeText(this, "Cannot divide by zero", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    result = firstValue / secondValue;
-                    break;
-            }
-
-            txtDisplay.setText(String.valueOf(result));
-            isNewInput = true;
-
-        } catch (Exception e) {
-            Toast.makeText(this, "Error in Calculation", Toast.LENGTH_SHORT).show();
-        }
-    }
-}
+</LinearLayout>
