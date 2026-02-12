@@ -1,0 +1,262 @@
+package com.example.p20;
+
+import android.Manifest;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import java.util.Set;
+
+public class MainActivity extends AppCompatActivity {
+
+    private static final int REQUEST_BLUETOOTH_PERMISSIONS = 1;
+
+    private BluetoothAdapter bluetoothAdapter;
+    private WifiManager wifiManager;
+    private TextView textView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        textView = findViewById(R.id.textView);
+
+        // Initialize Bluetooth adapter
+        bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        // Initialize WifiManager
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+        // Check and request Bluetooth permissions
+        checkBluetoothPermissions();
+
+        // Buttons
+        Button btnBluetoothOn = findViewById(R.id.btnBluetoothOn);
+        btnBluetoothOn.setOnClickListener(v -> turnOnBluetooth());
+
+        Button btnPairedDevices = findViewById(R.id.btnPairedDevices);
+        btnPairedDevices.setOnClickListener(v -> showPairedDevices());
+
+        Button btnEnableWifi = findViewById(R.id.btnEnableWifi);
+        btnEnableWifi.setOnClickListener(v -> setWifiEnabled(true));
+
+        Button btnDisableWifi = findViewById(R.id.btnDisableWifi);
+        btnDisableWifi.setOnClickListener(v -> setWifiEnabled(false));
+
+        Button btnCheckWifi = findViewById(R.id.btnCheckWifi);
+        btnCheckWifi.setOnClickListener(v -> checkWifiStatus());
+    }
+
+    private void checkBluetoothPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.BLUETOOTH_CONNECT},
+                        REQUEST_BLUETOOTH_PERMISSIONS);
+            }
+        }
+    }
+
+    // Turn on Bluetooth
+    private void turnOnBluetooth() {
+        if (bluetoothAdapter == null) {
+            Toast.makeText(this, "Bluetooth not supported", Toast.LENGTH_SHORT).show();
+        } else if (!bluetoothAdapter.isEnabled()) {
+            Intent turnOn = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(turnOn, 1);
+        } else {
+            Toast.makeText(this, "Bluetooth is already ON", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    // Show paired Bluetooth devices
+    private void showPairedDevices() {
+        if (bluetoothAdapter == null) {
+            Toast.makeText(this, "Bluetooth not supported", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH_CONNECT)
+                        != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Bluetooth permission not granted", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
+        if (pairedDevices.size() > 0) {
+            StringBuilder sb = new StringBuilder();
+            for (BluetoothDevice device : pairedDevices) {
+                sb.append(device.getName()).append(" : ").append(device.getAddress()).append("\n");
+            }
+            textView.setText(sb.toString());
+        } else {
+            textView.setText("No paired devices found");
+        }
+    }
+
+    // Enable/Disable Wi-Fi
+    private void setWifiEnabled(boolean enabled) {
+        if (wifiManager != null) {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
+                wifiManager.setWifiEnabled(enabled);
+                Toast.makeText(this, "Wi-Fi " + (enabled ? "enabled" : "disabled"), Toast.LENGTH_SHORT).show();
+            } else {
+                // For Android 10+, open Wi-Fi settings
+                Intent panelIntent = new Intent(android.provider.Settings.Panel.ACTION_WIFI);
+                startActivity(panelIntent);
+                Toast.makeText(this, "Open Wi-Fi settings to change state", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    // Check Wi-Fi status
+    private void checkWifiStatus() {
+        if (wifiManager != null) {
+            boolean wifiEnabled = wifiManager.isWifiEnabled();
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            String ssid = wifiInfo.getSSID();
+            textView.setText("Wi-Fi Enabled: " + wifiEnabled + "\nConnected SSID: " + ssid);
+        }
+    }
+
+    // Handle runtime permission result
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_BLUETOOTH_PERMISSIONS) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Bluetooth permission granted", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Bluetooth permission denied", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/btnBluetoothOn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Turn Bluetooth ON" />
+
+    <Button
+        android:id="@+id/btnPairedDevices"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Show Paired Bluetooth Devices"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btnEnableWifi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enable Wi-Fi"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btnDisableWifi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Disable Wi-Fi"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btnCheckWifi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Check Wi-Fi Status"
+        android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Status will appear here"
+        android:paddingTop="20dp"
+        android:textSize="16sp" />
+
+</LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.p20">
+
+    <!-- Permissions for Bluetooth -->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!-- Required for Android 12+ (API 31+) -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <!-- Permissions for Wi-Fi -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.P20">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
