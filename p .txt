@@ -1,0 +1,438 @@
+✅ PRACTICAL NAME: P18 – Login Application Using Two Activities
+📁 Project Structure (Where to Store Files)
+
+Inside your Android Studio project:
+
+app
+ └── java
+      └── your_package_name
+            ├── LoginActivity.java
+            └── WelcomeActivity.java
+
+ └── res
+      └── layout
+            ├── activity_login.xml
+            └── activity_welcome.xml
+
+ └── AndroidManifest.xml
+
+1️⃣ LoginActivity.java (Main Activity)
+
+📍 Location:
+app > java > your_package_name > LoginActivity.java
+
+package com.example.p18;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import android.content.Intent;
+
+public class LoginActivity extends Activity {
+
+    EditText etUsername, etPassword;
+    Button btnLogin;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        etUsername = findViewById(R.id.etUsername);
+        etPassword = findViewById(R.id.etPassword);
+        btnLogin = findViewById(R.id.btnLogin);
+
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String username = etUsername.getText().toString();
+                String password = etPassword.getText().toString();
+
+                // Simple validation
+                if(username.equals("admin") && password.equals("1234")) {
+
+                    Intent intent = new Intent(LoginActivity.this, WelcomeActivity.class);
+                    intent.putExtra("USERNAME", username);
+                    startActivity(intent);
+
+                } else {
+                    Toast.makeText(LoginActivity.this,
+                            "Invalid Username or Password",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+}
+
+2️⃣ WelcomeActivity.java
+
+📍 Location:
+app > java > your_package_name > WelcomeActivity.java
+
+package com.example.p18;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.TextView;
+import android.content.Intent;
+
+public class WelcomeActivity extends Activity {
+
+    TextView tvWelcome;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_welcome);
+
+        tvWelcome = findViewById(R.id.tvWelcome);
+
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("USERNAME");
+
+        tvWelcome.setText("Welcome " + username);
+    }
+}
+
+3️⃣ activity_login.xml
+
+📍 Location:
+app > res > layout > activity_login.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:gravity="center">
+
+    <EditText
+        android:id="@+id/etUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Username" />
+
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter Password"
+        android:inputType="textPassword"
+        android:layout_marginTop="10dp"/>
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:layout_marginTop="15dp"/>
+
+</LinearLayout>
+
+4️⃣ activity_welcome.xml
+
+📍 Location:
+app > res > layout > activity_welcome.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>
+
+5️⃣ AndroidManifest.xml
+
+📍 Location:
+app > manifests > AndroidManifest.xml
+
+Add both activities:
+
+<application
+    android:allowBackup="true"
+    android:label="P18 Login App"
+    android:theme="@android:style/Theme.Light">
+
+    <activity android:name=".WelcomeActivity" />
+
+    <activity android:name=".LoginActivity">
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+
+</application>
+
+6️⃣ Question Answers (Theory)
+Q1. Write a program to create two activities – Login Activity and Welcome Activity.
+
+✔ LoginActivity collects username and password.
+✔ If valid, it opens WelcomeActivity using Intent.
+✔ WelcomeActivity displays welcome message using TextView.
+
+(Program code given above.)
+
+Q2. How is data passed between activities using Intent?
+
+Data is passed using:
+
+intent.putExtra("KEY", value);
+
+
+Example:
+
+intent.putExtra("USERNAME", username);
+
+
+In second activity:
+
+String username = getIntent().getStringExtra("USERNAME");
+
+
+👉 putExtra() sends data
+👉 getStringExtra() receives data
+
+This is called Intent Data Passing.
+
+Q3. Role of AndroidManifest.xml in Multiple Activity Applications
+
+AndroidManifest.xml:
+
+Registers all activities.
+
+Defines launcher activity.
+
+Declares app permissions.
+
+Manages application configuration.
+
+Without declaring activity in Manifest, it will NOT run.
+
+Example:
+
+<activity android:name=".WelcomeActivity" />
+
+
+This makes WelcomeActivity accessible.
+
+▶ How to Run the Project
+
+Open Android Studio
+
+Click New Project
+
+Select Empty Activity
+
+Project Name: P18_LoginApp
+
+Language: Java
+
+Replace:
+
+MainActivity → Rename to LoginActivity
+
+Create new Activity:
+
+Right click java folder → New → Activity → Empty Activity
+
+Name it: WelcomeActivity
+
+Replace XML and Java code
+
+Update AndroidManifest.xml
+
+Click ▶ Run button
+
+Select Emulator or Mobile Device
+
+✅ Output
+
+First Screen → Login Page
+
+Enter:
+
+Username: admin
+
+Password: 1234
+
+Click Login
+
+Second Screen → "Welcome admin"
+
+🎯 Learning Outcomes Covered
+
+✔ Created multiple activities
+✔ Used Intent for navigation
+✔ Passed data between activities
+✔ Implemented basic validation
+✔ Used UI components (EditText, Button, TextView)
+✔ Updated AndroidManifest.xml
+
+If you want, I can also give:
+
+Viva Questions & Answers for P18
+
+Program with Activity Lifecycle methods added
+
+PDF format practical write-up for submission
+
+Just tell me 👍
+
+The prefix "android" for attribute "android:allowBackup" associated with an element type "application" is not bound.
+
+This error means:
+
+👉 The XML file is missing the Android namespace declaration at the top of the AndroidManifest.xml.
+
+Because of that, attributes like:
+
+android:allowBackup
+android:label
+android:theme
+
+
+are not recognized.
+
+✅ ✅ FIX (Very Important)
+
+Open your AndroidManifest.xml
+
+📍 Location:
+
+app > manifests > AndroidManifest.xml
+
+
+Make sure the <manifest> tag looks like this:
+
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.p18">
+
+    <application
+        android:allowBackup="true"
+        android:label="P18 Login App"
+        android:theme="@android:style/Theme.Light">
+
+        <activity android:name=".WelcomeActivity" />
+
+        <activity android:name=".LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
+
+🎯 Why This Error Happens
+
+If your manifest looks like this:
+
+<manifest>
+
+
+❌ Then the Android namespace is missing.
+
+Correct one must contain:
+
+xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+This line binds the prefix android: to the Android schema.
+
+✅ After Fix
+
+Save the file
+
+Click Build → Rebuild Project
+
+Run the app again
+
+Error will be solved ✅
+
+If still showing error, send me your full AndroidManifest.xml and I’ll correct it for you.
+
+Manifest merger failed : android:exported needs to be explicitly specified for element <activity#com.example.p18.LoginActivity>. Apps targeting Android 12 and higher are required to specify an explicit value for android:exported when the corresponding component has an intent filter defined. See https://developer.android.com/guide/topics/manifest/activity-element#exported for details.
+
+Ah! This is a common issue when targeting Android 12 (API level 31+) or higher.
+
+Starting with Android 12, any activity, service, or receiver that has an <intent-filter> must explicitly declare android:exported="true" or "false".
+
+Your LoginActivity has an intent filter (it's the LAUNCHER activity), so Android requires you to explicitly set it.
+
+✅ Fix for AndroidManifest.xml
+
+Update your <activity> tag for LoginActivity like this:
+
+<activity
+    android:name=".LoginActivity"
+    android:exported="true">
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+    </intent-filter>
+</activity>
+
+
+For WelcomeActivity (no intent filter), you can set android:exported="false" or leave it (optional):
+
+<activity
+    android:name=".WelcomeActivity"
+    android:exported="false" />
+
+✅ Full Corrected AndroidManifest.xml:
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.p18">
+
+    <application
+        android:allowBackup="true"
+        android:label="P18 Login App"
+        android:theme="@android:style/Theme.Light">
+
+        <!-- Welcome Activity (no intent filter) -->
+        <activity
+            android:name=".WelcomeActivity"
+            android:exported="false" />
+
+        <!-- Login Activity (launcher) -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>
+
+✅ Explanation
+
+android:exported="true" → This activity can be launched from outside the app (required for LAUNCHER activity).
+
+android:exported="false" → Activity cannot be launched from outside the app, only internally.
+
+Once you add this, Build → Rebuild Project, and the error will disappear.
