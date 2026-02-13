@@ -1,0 +1,237 @@
+Got it! We can create a **complete Android Splash Screen practical (p13)** that covers all your questions, including Java code, XML layouts, and instructions on where to store them. I’ll break it down step by step.
+
+---
+
+## **Step 1: Project Setup**
+
+1. Open **Android Studio**.
+2. Create a new project → **Empty Activity**.
+3. Name the project: `p13` (matches your practical).
+4. Language: **Java**.
+5. Minimum SDK: choose **API 21 (Lollipop)** or above.
+
+---
+
+## **Step 2: Folder & File Structure**
+
+You will need:
+
+* **Java code:** `SplashActivity.java`, `MainActivity.java` → store in `app/src/main/java/com/yourpackage/`.
+* **XML layouts:** `activity_splash.xml`, `activity_main.xml` → store in `app/src/main/res/layout/`.
+* **Drawable assets:** Logo & background → store in `app/src/main/res/drawable/`.
+* **Manifest:** `AndroidManifest.xml` → store in `app/src/main/`.
+
+---
+
+## **Step 3: XML Layout for Splash Screen**
+
+**File:** `res/layout/activity_splash.xml`
+
+```xml
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/splash_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/splash_bg">
+
+    <!-- App Logo -->
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerInParent="true"
+        android:src="@drawable/logo"
+        android:alpha="0" />
+
+    <!-- App Name -->
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="P13 App"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:layout_below="@id/logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:alpha="0" />
+</RelativeLayout>
+```
+
+✅ Notes:
+
+* `@drawable/logo` → place your logo image in `res/drawable/`.
+* `@drawable/splash_bg` → place a background image (optional) in `res/drawable/`.
+
+---
+
+## **Step 4: Java Code for Splash Screen with Fade-in Animation & Handler**
+
+**File:** `SplashActivity.java`
+
+```java
+package com.example.p13;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class SplashActivity extends AppCompatActivity {
+
+    private static final int SPLASH_DURATION = 3000; // 3 seconds
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_splash);
+
+        ImageView logo = findViewById(R.id.logo);
+        TextView appName = findViewById(R.id.app_name);
+
+        // Fade-in animation
+        AlphaAnimation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setDuration(2000); // 2 seconds
+        fadeIn.setFillAfter(true);
+
+        logo.startAnimation(fadeIn);
+        appName.startAnimation(fadeIn);
+
+        // Handler to delay transition
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Check login status (for demo, assume false)
+                boolean isLoggedIn = false;
+
+                Intent intent;
+                if (isLoggedIn) {
+                    intent = new Intent(SplashActivity.this, MainActivity.class);
+                } else {
+                    intent = new Intent(SplashActivity.this, MainActivity.class); // Replace with LoginActivity if exists
+                }
+                startActivity(intent);
+                finish(); // Close SplashActivity
+            }
+        }, SPLASH_DURATION);
+    }
+}
+```
+
+✅ Notes:
+
+* `Handler.postDelayed()` waits for 3 seconds before launching `MainActivity`.
+* `AlphaAnimation` creates the fade-in effect for logo & app name.
+* `finish()` ensures the splash screen is removed from the back stack.
+
+---
+
+## **Step 5: Main Activity (Java & XML)**
+
+**File:** `MainActivity.java`
+
+```java
+package com.example.p13;
+
+import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+    }
+}
+```
+
+**File:** `res/layout/activity_main.xml`
+
+```xml
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
+
+    <TextView
+        android:id="@+id/main_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to Main Activity"
+        android:textSize="22sp"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>
+```
+
+---
+
+## **Step 6: Manifest Configuration**
+
+**File:** `AndroidManifest.xml`
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.p13">
+
+    <application
+        android:allowBackup="true"
+        android:label="p13"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+
+        <activity android:name=".MainActivity" />
+
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+    </application>
+</manifest>
+```
+
+✅ Notes:
+
+* `SplashActivity` is the **launcher** activity.
+* No ActionBar for full-screen splash effect.
+
+---
+
+## **Step 7: How to Run**
+
+1. Place **logo.png** and **splash_bg.png** in `res/drawable/`.
+2. Build the project in Android Studio.
+3. Connect an emulator or real device.
+4. Run the app → you will see:
+
+   * Logo and app name fade in.
+   * Splash screen lasts 3 seconds.
+   * Automatically transitions to `MainActivity`.
+
+---
+
+This setup addresses **all your questions**:
+
+1. Splash screen shows logo & name for 3s ✅
+2. Fade-in animation for logo ✅
+3. Handler explains delay in activity lifecycle ✅
+4. Set as launcher in manifest ✅
+5. Background image scales using RelativeLayout ✅
+6. Can check login status before navigating ✅ (demo with `isLoggedIn` boolean)
+
+---
+
+If you want, I can also **add a more advanced version** where the splash screen is fully **full-screen with status bar hidden** and **supports multiple screen sizes properly**.
+
+Do you want me to do that?
