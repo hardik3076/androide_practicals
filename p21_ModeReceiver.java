@@ -11,7 +11,7 @@ public class ModeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if (intent.getAction().equals(Intent.ACTION_AIRPLANE_MODE_CHANGED)) {
+        if (Intent.ACTION_AIRPLANE_MODE_CHANGED.equals(intent.getAction())) {
 
             boolean isOn = intent.getBooleanExtra("state", false);
 
@@ -29,9 +29,10 @@ public class ModeReceiver extends BroadcastReceiver {
         AudioManager audioManager =
                 (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
-        audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-
-        Toast.makeText(context, "Silent Mode Activated", Toast.LENGTH_SHORT).show();
+        if (audioManager != null) {
+            audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+            Toast.makeText(context, "Silent Mode Activated", Toast.LENGTH_SHORT).show();
+        }
     }
 
     // Function to set Loud Mode
@@ -40,9 +41,10 @@ public class ModeReceiver extends BroadcastReceiver {
         AudioManager audioManager =
                 (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
-        audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-
-        Toast.makeText(context, "Loud Mode Activated", Toast.LENGTH_SHORT).show();
+        if (audioManager != null) {
+            audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+            Toast.makeText(context, "Loud Mode Activated", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 /*
