@@ -1,55 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
- android:orientation="vertical"
- android:padding="20dp"
- android:layout_width="match_parent"
- android:layout_height="match_parent">
-<EditText
-    android:id="@+id/etName"
-    android:hint="Enter Name"
+    android:orientation="vertical"
+    android:padding="20dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    android:layout_height="match_parent">
 
-<EditText
-    android:id="@+id/etEmail"
-    android:hint="Enter Email"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/etName"
+        android:hint="Enter Name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="12dp"
+        android:inputType="text" />
 
-<EditText
-    android:id="@+id/etPhone"
-    android:hint="Enter Phone"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/etEmail"
+        android:hint="Enter Email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="12dp"
+        android:inputType="textEmailAddress" />
 
-<EditText
-    android:id="@+id/etPassword"
-    android:hint="Enter Password"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/etPhone"
+        android:hint="Enter Phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="12dp"
+        android:inputType="phone" />
 
-<Button
-    android:id="@+id/btnInsert"
-    android:text="Register"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/etPassword"
+        android:hint="Enter Password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:padding="12dp"
+        android:inputType="textPassword" />
 
-<Button
-    android:id="@+id/btnView"
-    android:text="View Data"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btnInsert"
+        android:text="Register"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="#4CAF50"
+        android:textColor="@color/white" />
 
-<Button
-    android:id="@+id/btnUpdate"
-    android:text="Update"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/btnView"
+        android:text="View Data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="#2196F3"
+        android:textColor="@color/white" />
 
-<Button
-    android:id="@+id/btnDelete"
-    android:text="Delete"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
- </LinearLayout>
+    <Button
+        android:id="@+id/btnUpdate"
+        android:text="Update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="#FF9800"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:text="Delete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:backgroundTint="#F44336"
+        android:textColor="@color/white" />
+
+</LinearLayout>
